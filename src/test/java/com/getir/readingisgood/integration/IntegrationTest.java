@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.getir.readingisgood.config.GlobalConfig;
 import com.getir.readingisgood.domain.customer.adapter.repository.jpa.CustomerJpaRepository;
 import com.getir.readingisgood.domain.customer.core.value.Email;
+import com.getir.readingisgood.message.CreateBookMessageBuilder;
 import com.getir.readingisgood.message.CreateCustomerMessageBuilder;
 import com.getir.readingisgood.util.Randomizer;
 import com.github.javafaker.Faker;
@@ -64,6 +65,21 @@ public class IntegrationTest {
         .perform(
             MockMvcRequestBuilders.post("/api/v1/customer/register")
                 .content(asJsonString(customerMessage))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isAccepted());
+  }
+
+  @Test
+  public void shouldSimulateCreateBookApiAndReturnIsAcceptedStatus() throws Exception {
+    Faker faker = Randomizer.create().getFaker();
+    CreateBookMessageBuilder createCustomerMessageBuilder =
+        CreateBookMessageBuilder.create().withName(faker.book().title());
+    var createBookMessage = createCustomerMessageBuilder.buildCreateBookMessage();
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.post("/api/v1/book/create")
+                .content(asJsonString(createBookMessage))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isAccepted());

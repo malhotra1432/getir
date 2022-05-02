@@ -1,9 +1,12 @@
 package com.getir.readingisgood.util;
 
+import com.getir.readingisgood.domain.book.domain.command.CreateBook;
+import com.getir.readingisgood.domain.book.domain.core.value.Name;
 import com.getir.readingisgood.domain.customer.command.CreateCustomer;
 import com.getir.readingisgood.domain.customer.core.CustomerState;
 import com.getir.readingisgood.domain.customer.core.value.*;
 import com.github.javafaker.Faker;
+import java.math.BigDecimal;
 import java.time.Instant;
 
 public class TestDataBuilder {
@@ -38,6 +41,12 @@ public class TestDataBuilder {
         .contactNumber(ContactNumber.create(faker.phoneNumber().phoneNumber()))
         .address(addressBuilder())
         .password(Password.create("123456"));
+  }
+
+  public static CreateBook.CreateBookBuilder randomCreateBookBuilder() {
+    return CreateBook.builder()
+        .name(Name.create(faker.book().title()))
+        .price(BigDecimal.valueOf(10));
   }
 
   public static Email randomEmail() {
