@@ -1,5 +1,6 @@
 package com.getir.readingisgood.domain.order.domain.service;
 
+import com.getir.readingisgood.api.controller.model.CustomerAllOrderResponse;
 import com.getir.readingisgood.domain.book.domain.core.Book;
 import com.getir.readingisgood.domain.book.domain.core.value.Name;
 import com.getir.readingisgood.domain.book.domain.exception.BookNotAvailableException;
@@ -15,6 +16,7 @@ import com.getir.readingisgood.domain.order.domain.exception.UnknownOrderIdExcep
 import com.getir.readingisgood.domain.order.domain.repository.OrderDomainRepository;
 import java.util.Optional;
 import lombok.NonNull;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -88,5 +90,9 @@ public class OrderService {
     return orderDomainRepository
         .findById(orderId)
         .orElseThrow(() -> new UnknownOrderIdException(orderId));
+  }
+
+  public CustomerAllOrderResponse getOrderByPage(Pageable pageable, Email email) {
+    return orderDomainRepository.findByCustomerEmail(pageable, email);
   }
 }

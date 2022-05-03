@@ -1,6 +1,8 @@
 package com.getir.readingisgood.api.controller;
 
+import com.getir.readingisgood.api.controller.model.CustomerAllOrderResponse;
 import com.getir.readingisgood.api.controller.model.OrderByIdResponse;
+import com.getir.readingisgood.domain.customer.core.value.Email;
 import com.getir.readingisgood.domain.order.domain.command.CreateOrder;
 import com.getir.readingisgood.domain.order.domain.core.value.OrderId;
 import com.getir.readingisgood.domain.order.domain.exception.UnknownOrderIdException;
@@ -9,6 +11,7 @@ import com.getir.readingisgood.message.CreateOrderMessage;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -53,5 +56,12 @@ public class OrderController {
                 .createdAt(order.getCreatedAt())
                 .customerEmail(order.getCustomerEmail().getValue())
                 .build());
+  }
+
+  @GetMapping("/email/{email}")
+  public ResponseEntity<CustomerAllOrderResponse> getOrderByPage(
+      Pageable pageable, @PathVariable String email) {
+    return new ResponseEntity<>(
+        orderService.getOrderByPage(pageable, Email.create(email)), HttpStatus.OK);
   }
 }

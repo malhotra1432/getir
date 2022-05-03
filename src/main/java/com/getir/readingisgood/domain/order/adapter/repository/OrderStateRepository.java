@@ -1,5 +1,7 @@
 package com.getir.readingisgood.domain.order.adapter.repository;
 
+import com.getir.readingisgood.api.controller.model.CustomerAllOrderResponse;
+import com.getir.readingisgood.domain.customer.core.value.Email;
 import com.getir.readingisgood.domain.order.adapter.repository.jpa.OrderStateJPARepository;
 import com.getir.readingisgood.domain.order.adapter.state.OrderStateAdapter;
 import com.getir.readingisgood.domain.order.domain.core.Order;
@@ -8,6 +10,7 @@ import com.getir.readingisgood.domain.order.domain.repository.OrderDomainReposit
 import java.util.Optional;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -36,5 +39,18 @@ public class OrderStateRepository implements OrderDomainRepository {
         .findById(orderId.getValue())
         .map(orderStateAdapter::decode)
         .map(Order::create);
+  }
+
+  @Override
+  public CustomerAllOrderResponse findByCustomerEmail(Pageable pageable, Email email) {
+    return getOrderResponseByPage(pageable, email);
+  }
+
+  private CustomerAllOrderResponse getOrderResponseByPage(Pageable pageable, Email email) {
+    CustomerAllOrderResponse customerAllOrderResponse;
+    var page = orderStateJPARepository.findByCustomerEmail(pageable, email.getValue());
+    customerAllOrderResponse =
+        orderStateAdapter.customerAllOrderResponseBuilder(page, email).build();
+    return customerAllOrderResponse;
   }
 }
