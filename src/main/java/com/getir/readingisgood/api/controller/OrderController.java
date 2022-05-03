@@ -1,6 +1,9 @@
 package com.getir.readingisgood.api.controller;
 
+import com.getir.readingisgood.api.controller.model.OrderByIdResponse;
 import com.getir.readingisgood.domain.order.domain.command.CreateOrder;
+import com.getir.readingisgood.domain.order.domain.core.value.OrderId;
+import com.getir.readingisgood.domain.order.domain.exception.UnknownOrderIdException;
 import com.getir.readingisgood.domain.order.domain.service.OrderService;
 import com.getir.readingisgood.message.CreateOrderMessage;
 import javax.validation.Valid;
@@ -32,5 +35,23 @@ public class OrderController {
     } catch (Exception e) {
       return ResponseEntity.badRequest().body("Order not placed!" + e);
     }
+  }
+
+  @GetMapping("/{id}")
+  @ResponseStatus(value = HttpStatus.OK)
+  public ResponseEntity<OrderByIdResponse> getOrderById(@Valid @PathVariable Long id)
+      throws UnknownOrderIdException {
+    log.info("Get order by id: {}", id);
+    var order = orderService.getOrderById(OrderId.create(id)).getState();
+    return ResponseEntity.ok()
+        .body(
+            OrderByIdResponse.builder()
+                .id(order.getId().getValue())
+                .bookId(order.getBookId().getValue())
+                .bookName(order.getBookName().getValue())
+                .bookPrice(order.getBookPrice())
+                .createdAt(order.getCreatedAt())
+                .customerEmail(order.getCustomerEmail().getValue())
+                .build());
   }
 }

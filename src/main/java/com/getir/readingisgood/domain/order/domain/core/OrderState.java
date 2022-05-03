@@ -13,7 +13,7 @@ import lombok.NonNull;
 @Builder
 @Data
 public class OrderState {
-  private OrderId orderId;
+  private OrderId id;
   @NonNull Email customerEmail;
   BookId bookId;
   @NonNull Name bookName;

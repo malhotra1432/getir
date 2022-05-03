@@ -10,6 +10,8 @@ import com.getir.readingisgood.domain.customer.repository.CustomerDomainReposito
 import com.getir.readingisgood.domain.order.domain.command.CreateOrder;
 import com.getir.readingisgood.domain.order.domain.core.Order;
 import com.getir.readingisgood.domain.order.domain.core.OrderState;
+import com.getir.readingisgood.domain.order.domain.core.value.OrderId;
+import com.getir.readingisgood.domain.order.domain.exception.UnknownOrderIdException;
 import com.getir.readingisgood.domain.order.domain.repository.OrderDomainRepository;
 import java.util.Optional;
 import lombok.NonNull;
@@ -80,5 +82,11 @@ public class OrderService {
     return bookDomainRepository
         .findByNameAndIsAvailable(name, true)
         .orElseThrow(() -> new BookNotAvailableException(name));
+  }
+
+  public Order getOrderById(OrderId orderId) {
+    return orderDomainRepository
+        .findById(orderId)
+        .orElseThrow(() -> new UnknownOrderIdException(orderId));
   }
 }
