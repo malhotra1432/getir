@@ -25,8 +25,12 @@ public class BookController {
   @ResponseStatus(value = HttpStatus.ACCEPTED)
   public ResponseEntity<String> create(@Valid @RequestBody CreateBookMessage createBookMessage) {
     log.info("Create book with name: {}", createBookMessage.getName());
-    CreateBook createBook = CreateBookMessage.toCreateBookCommand(createBookMessage);
-    bookService.create(createBook);
-    return ResponseEntity.accepted().body("Book created successfully!");
+    try {
+      CreateBook createBook = CreateBookMessage.toCreateBookCommand(createBookMessage);
+      bookService.create(createBook);
+      return ResponseEntity.accepted().body("Book created successfully!");
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body("Book insertion failed!" + e);
+    }
   }
 }

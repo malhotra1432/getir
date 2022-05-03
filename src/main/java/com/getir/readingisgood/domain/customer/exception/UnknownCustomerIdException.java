@@ -11,7 +11,7 @@ public class UnknownCustomerIdException extends CustomerException {
   }
 
   public UnknownCustomerIdException(CustomerId customerId, Throwable throwable) {
-    super(customerId + " does not exist.", throwable);
+    super("Customer with id " + customerId + " does not exist.", throwable);
     this.customerId = customerId;
   }
 }

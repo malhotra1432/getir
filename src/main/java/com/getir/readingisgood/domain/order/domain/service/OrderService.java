@@ -66,7 +66,8 @@ public class OrderService {
   }
 
   private void throwIfBookDoesNotExists(Name bookName) {
-    if (!bookStateAlreadyExists(bookName)) {
+    var isBookAvailable = bookStateAlreadyExists(bookName).getState().isAvailable();
+    if (!isBookAvailable) {
       throw new BookNotAvailableException(bookName);
     }
   }
@@ -75,7 +76,9 @@ public class OrderService {
     return customerDomainRepository.findByEmail(email).isPresent();
   }
 
-  private boolean bookStateAlreadyExists(Name name) {
-    return bookDomainRepository.findByNameAndIsAvailable(name, true).isPresent();
+  private Book bookStateAlreadyExists(Name name) {
+    return bookDomainRepository
+        .findByNameAndIsAvailable(name, true)
+        .orElseThrow(() -> new BookNotAvailableException(name));
   }
 }

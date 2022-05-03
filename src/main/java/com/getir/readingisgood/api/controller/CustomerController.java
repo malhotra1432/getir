@@ -25,8 +25,13 @@ public class CustomerController {
   @ResponseStatus(value = HttpStatus.ACCEPTED)
   public ResponseEntity<String> create(@Valid @RequestBody CreateCustomerMessage customerMessage) {
     log.info("Create customer with email: {}", customerMessage.getEmail());
-    CreateCustomer createCustomer = CreateCustomerMessage.toCreateCustomerCommand(customerMessage);
-    customerService.create(createCustomer);
-    return ResponseEntity.accepted().body("Customer registered successfully!");
+    try {
+      CreateCustomer createCustomer =
+          CreateCustomerMessage.toCreateCustomerCommand(customerMessage);
+      customerService.create(createCustomer);
+      return ResponseEntity.accepted().body("Customer registered successfully!");
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body("Customer registration failed!" + e);
+    }
   }
 }

@@ -31,16 +31,16 @@ public class BookRepository implements BookDomainRepository {
 
   @Override
   public Optional<Book> findByName(Name name) {
-    return bookStateJPARepository
-        .findByName(name.getValue())
+    return bookStateJPARepository.findByName(name.getValue()).stream()
+        .findFirst()
         .map(bookStateAdapter::decode)
         .map(Book::create);
   }
 
   @Override
   public Optional<Book> findByNameAndIsAvailable(Name name, boolean isAvailable) {
-    return bookStateJPARepository
-        .findByNameAndIsAvailable(name.getValue(), true)
+    return bookStateJPARepository.findByNameAndIsAvailable(name.getValue(), true).stream()
+        .findFirst()
         .map(bookStateAdapter::decode)
         .map(Book::create);
   }

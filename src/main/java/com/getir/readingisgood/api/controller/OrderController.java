@@ -25,8 +25,12 @@ public class OrderController {
   @ResponseStatus(value = HttpStatus.ACCEPTED)
   public ResponseEntity<String> create(@Valid @RequestBody CreateOrderMessage createOrderMessage) {
     log.info("Create order with name: {}", createOrderMessage.getBookName());
-    CreateOrder createOrder = CreateOrderMessage.toCreateOrderCommand(createOrderMessage);
-    orderService.create(createOrder);
-    return ResponseEntity.accepted().body("Order created successfully!");
+    try {
+      CreateOrder createOrder = CreateOrderMessage.toCreateOrderCommand(createOrderMessage);
+      orderService.create(createOrder);
+      return ResponseEntity.accepted().body("Order created successfully!");
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body("Order not placed!" + e);
+    }
   }
 }

@@ -11,7 +11,7 @@ public class UnknownCustomerEmailException extends CustomerException {
   }
 
   public UnknownCustomerEmailException(Email email, Throwable throwable) {
-    super(email + " does not exist.", throwable);
+    super("Customer with Email " + email.getValue() + " does not exist.", throwable);
     this.email = email;
   }
 }

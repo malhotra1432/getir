@@ -11,7 +11,7 @@ public class BookNotAvailableException extends BookException {
   }
 
   public BookNotAvailableException(Name bookName, Throwable throwable) {
-    super(bookName + " does not exist.", throwable);
+    super("Stock for book " + bookName.getValue() + " over! Please update book stock!", throwable);
     this.bookName = bookName;
   }
 }
