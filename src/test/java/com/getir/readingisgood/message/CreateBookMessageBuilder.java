@@ -13,12 +13,13 @@ public class CreateBookMessageBuilder {
   private final Randomizer randomizer = Randomizer.create();
   private static final Faker faker = Randomizer.create().getFaker();
   @With private String name = faker.book().title();
+  @With private BigDecimal price = BigDecimal.valueOf(randomizer.nextInt());
 
   public static CreateBookMessageBuilder create() {
     return new CreateBookMessageBuilder();
   }
 
   public CreateBookMessage buildCreateBookMessage() {
-    return CreateBookMessage.builder().name(name).price(BigDecimal.valueOf(20)).build();
+    return CreateBookMessage.builder().name(name).price(price).build();
   }
 }

@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 class CustomerControllerTest {
   private final CustomerService customerService = mock(CustomerService.class);
   private static final Faker faker = Randomizer.create().getFaker();
-  private final Email email = Email.create(faker.funnyName().name() + "@gmail.com");
+  private final Email email = Email.create(faker.name().firstName() + "@gmail.com");
   private final CreateCustomerMessageBuilder createCustomerMessage =
       CreateCustomerMessageBuilder.create().withEmail(email.getValue());
 

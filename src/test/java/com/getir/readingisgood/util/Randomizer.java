@@ -24,4 +24,24 @@ public class Randomizer {
   public String uuid() {
     return UUID.randomUUID().toString();
   }
+
+  public Integer nextInt() {
+    return random.nextInt();
+  }
+
+  public Double nextDouble() {
+    return random.nextDouble();
+  }
+
+  public Integer nextInt(int bound) {
+    return random.nextInt(bound);
+  }
+
+  public Integer nonZeroNextInt(int bound) {
+    return random.nextInt(bound) + 1;
+  }
+
+  public boolean booleanValue() {
+    return nextInt() % 2 == 0;
+  }
 }
