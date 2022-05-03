@@ -1,6 +1,7 @@
 package com.getir.readingisgood.domain.order.domain.repository;
 
 import com.getir.readingisgood.api.controller.model.CustomerAllOrderResponse;
+import com.getir.readingisgood.api.controller.model.MonthlyStatisticsData;
 import com.getir.readingisgood.domain.customer.core.value.Email;
 import com.getir.readingisgood.domain.order.domain.core.Order;
 import com.getir.readingisgood.domain.order.domain.core.value.OrderId;
@@ -14,4 +15,6 @@ public interface OrderDomainRepository {
   Optional<Order> findById(OrderId orderId);
 
   CustomerAllOrderResponse findByCustomerEmail(Pageable pageable, Email email);
+
+  MonthlyStatisticsData findByCustomerEmail(Email email);
 }

@@ -1,6 +1,7 @@
 package com.getir.readingisgood.domain.order.domain.service;
 
 import com.getir.readingisgood.api.controller.model.CustomerAllOrderResponse;
+import com.getir.readingisgood.api.controller.model.MonthlyStatisticsData;
 import com.getir.readingisgood.domain.book.domain.core.Book;
 import com.getir.readingisgood.domain.book.domain.core.value.Name;
 import com.getir.readingisgood.domain.book.domain.exception.BookNotAvailableException;
@@ -94,5 +95,9 @@ public class OrderService {
 
   public CustomerAllOrderResponse getOrderByPage(Pageable pageable, Email email) {
     return orderDomainRepository.findByCustomerEmail(pageable, email);
+  }
+
+  public MonthlyStatisticsData getCustomerMonthlyStats(Email email) {
+    return orderDomainRepository.findByCustomerEmail(email);
   }
 }

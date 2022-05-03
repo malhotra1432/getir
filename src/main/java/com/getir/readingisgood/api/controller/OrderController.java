@@ -1,6 +1,7 @@
 package com.getir.readingisgood.api.controller;
 
 import com.getir.readingisgood.api.controller.model.CustomerAllOrderResponse;
+import com.getir.readingisgood.api.controller.model.MonthlyStatisticsData;
 import com.getir.readingisgood.api.controller.model.OrderByIdResponse;
 import com.getir.readingisgood.domain.customer.core.value.Email;
 import com.getir.readingisgood.domain.order.domain.command.CreateOrder;
@@ -63,5 +64,11 @@ public class OrderController {
       Pageable pageable, @PathVariable String email) {
     return new ResponseEntity<>(
         orderService.getOrderByPage(pageable, Email.create(email)), HttpStatus.OK);
+  }
+
+  @GetMapping("/stats/{email}")
+  public ResponseEntity<MonthlyStatisticsData> getCustomerMonthlyStats(@PathVariable String email) {
+    return new ResponseEntity<>(
+        orderService.getCustomerMonthlyStats(Email.create(email)), HttpStatus.OK);
   }
 }
