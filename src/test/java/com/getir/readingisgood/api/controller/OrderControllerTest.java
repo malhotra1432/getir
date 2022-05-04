@@ -11,6 +11,8 @@ import com.getir.readingisgood.message.CreateOrderMessageBuilder;
 import com.getir.readingisgood.util.Randomizer;
 import com.github.javafaker.Faker;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 class OrderControllerTest {
   private final OrderService orderService = mock(OrderService.class);
@@ -31,5 +33,24 @@ class OrderControllerTest {
 
   private CreateOrder buildCreateOrderCommand(CreateOrderMessage createOrderMessage) {
     return CreateOrderMessage.toCreateOrderCommand(createOrderMessage);
+  }
+
+  @Test
+  void shouldGetOrderByPage() {
+    OrderController orderController = new OrderController(orderService);
+    Pageable pageable = PageRequest.of(0, 2);
+
+    orderController.getOrderByPage(pageable, email.getValue());
+
+    verify(orderService).getOrderByPage(pageable, email);
+  }
+
+  @Test
+  void shouldGetMonthlyStats() {
+    OrderController orderController = new OrderController(orderService);
+
+    orderController.getCustomerMonthlyStats(email.getValue());
+
+    verify(orderService).getCustomerMonthlyStats(email);
   }
 }

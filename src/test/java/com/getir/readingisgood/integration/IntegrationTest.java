@@ -124,4 +124,22 @@ public class IntegrationTest {
                 .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isAccepted());
   }
+
+  @Test
+  public void shouldSimulateOrderByEmailAndReturnIsOkStatus() throws Exception {
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.get("/api/v1/order/email/prabhat@gmail.com?page=0&size=2")
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  public void shouldSimulateMonthlyStatsAndReturnIsOkStatus() throws Exception {
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.get("/api/v1/order/stats/prabhat@gmail.com")
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk());
+  }
 }
