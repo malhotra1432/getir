@@ -15,9 +15,7 @@ public class BookService {
   }
 
   public void create(@NonNull CreateBook createBook) {
-
     var book = Book.create(createBook);
-
     bookDomainRepository.save(book);
   }
 }

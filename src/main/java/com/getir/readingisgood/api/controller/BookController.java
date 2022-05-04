@@ -24,7 +24,7 @@ public class BookController {
   @PostMapping("/create")
   @ResponseStatus(value = HttpStatus.ACCEPTED)
   public ResponseEntity<String> create(@Valid @RequestBody CreateBookMessage createBookMessage) {
-    log.info("Create book with name: {}", createBookMessage.getName());
+    log.info("Insert book with name: {}", createBookMessage.getName());
     try {
       CreateBook createBook = CreateBookMessage.toCreateBookCommand(createBookMessage);
       bookService.create(createBook);

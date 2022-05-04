@@ -31,13 +31,13 @@ public class OrderController {
   @PostMapping("/create")
   @ResponseStatus(value = HttpStatus.ACCEPTED)
   public ResponseEntity<String> create(@Valid @RequestBody CreateOrderMessage createOrderMessage) {
-    log.info("Create order with name: {}", createOrderMessage.getBookName());
+    log.info("Place order for customer with email: {}", createOrderMessage.getCustomerEmail());
     try {
       CreateOrder createOrder = CreateOrderMessage.toCreateOrderCommand(createOrderMessage);
       orderService.create(createOrder);
-      return ResponseEntity.accepted().body("Order created successfully!");
+      return ResponseEntity.accepted().body("Order placed successfully!");
     } catch (Exception e) {
-      return ResponseEntity.badRequest().body("Order not placed!" + e);
+      return ResponseEntity.badRequest().body("Order could not be placed!" + e);
     }
   }
 
@@ -45,29 +45,24 @@ public class OrderController {
   @ResponseStatus(value = HttpStatus.OK)
   public ResponseEntity<OrderByIdResponse> getOrderById(@Valid @PathVariable Long id)
       throws UnknownOrderIdException {
-    log.info("Get order by id: {}", id);
+    log.info("Get order by order id: {}", id);
     var order = orderService.getOrderById(OrderId.create(id)).getState();
-    return ResponseEntity.ok()
-        .body(
-            OrderByIdResponse.builder()
-                .id(order.getId().getValue())
-                .bookId(order.getBookId().getValue())
-                .bookName(order.getBookName().getValue())
-                .bookPrice(order.getBookPrice())
-                .createdAt(order.getCreatedAt())
-                .customerEmail(order.getCustomerEmail().getValue())
-                .build());
+    return ResponseEntity.ok().body(OrderByIdResponse.toOrderByIdResponse(order));
   }
 
   @GetMapping("/email/{email}")
+  @ResponseStatus(value = HttpStatus.OK)
   public ResponseEntity<CustomerAllOrderResponse> getOrderByPage(
       Pageable pageable, @PathVariable String email) {
+    log.info("Get customer's all order by page with email : {}", email);
     return new ResponseEntity<>(
         orderService.getOrderByPage(pageable, Email.create(email)), HttpStatus.OK);
   }
 
   @GetMapping("/stats/{email}")
+  @ResponseStatus(value = HttpStatus.OK)
   public ResponseEntity<MonthlyStatisticsData> getCustomerMonthlyStats(@PathVariable String email) {
+    log.info("Get customer's monthly stats with email : {}", email);
     return new ResponseEntity<>(
         orderService.getCustomerMonthlyStats(Email.create(email)), HttpStatus.OK);
   }

@@ -26,11 +26,12 @@ public class BookRepository implements BookDomainRepository {
   @Override
   public void save(@NonNull Book book) {
     bookStateJPARepository.save(bookStateAdapter.encode(book.getState()));
-    log.info("Successfully updated the state for {}", book.getState().getId());
+    log.info("Successfully updated the state for {} ", book.getState().getId());
   }
 
   @Override
   public Optional<Book> findByName(Name name) {
+    log.info("Fetching books by name {} ", name.getValue());
     return bookStateJPARepository.findByName(name.getValue()).stream()
         .findFirst()
         .map(bookStateAdapter::decode)
@@ -39,6 +40,7 @@ public class BookRepository implements BookDomainRepository {
 
   @Override
   public Optional<Book> findByNameAndIsAvailable(Name name, boolean isAvailable) {
+    log.info("Fetching books by name and availability {} ", name.getValue());
     return bookStateJPARepository.findByNameAndIsAvailable(name.getValue(), true).stream()
         .findFirst()
         .map(bookStateAdapter::decode)
@@ -48,5 +50,6 @@ public class BookRepository implements BookDomainRepository {
   @Override
   public void deleteById(BookId bookId) {
     bookStateJPARepository.deleteById(bookId.getValue());
+    log.info("Deleted book with id {} ", bookId.getValue());
   }
 }

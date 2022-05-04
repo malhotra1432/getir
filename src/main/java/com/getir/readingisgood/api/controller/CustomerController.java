@@ -24,7 +24,7 @@ public class CustomerController {
   @PostMapping("/register")
   @ResponseStatus(value = HttpStatus.ACCEPTED)
   public ResponseEntity<String> create(@Valid @RequestBody CreateCustomerMessage customerMessage) {
-    log.info("Create customer with email: {}", customerMessage.getEmail());
+    log.info("Register customer with email: {}", customerMessage.getEmail());
     try {
       CreateCustomer createCustomer =
           CreateCustomerMessage.toCreateCustomerCommand(customerMessage);
