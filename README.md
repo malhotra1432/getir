@@ -28,10 +28,13 @@
   - Every time an order is placed, particular book is deleted
 - `localhost:8080/api/v1/order/3`
   - Find an order by id
+  - Get the id from db
 - `localhost:8080/api/v1/order/email/prabhat@gmail.com?page=0&size=2`
   - To get order by email with pagination
+  - Pass page and size as per data in db to enjoy pagination
 - `localhost:8080/api/v1/order/stats/prabhat@gmail.com`
   - To get customer's monthly stats
+  - Please edit data (created_at field) in db with different months to see stats of more than one month
 
 ## Commands
 - `./go clean build`   - To clean and build project
